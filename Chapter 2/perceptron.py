@@ -3,7 +3,7 @@ class Perceptron:
     self._result = None
   def train(self, training_data):
     self._weights = len(training_data[0][0])*[0]
-    for i in range(100000):
+    for i in range(10000):
       for input_data, label in training_data:
         cross_product = sum(weight_i * input_i for weight_i, input_i in zip(self._weights, input_data))
         error = label - cross_product
