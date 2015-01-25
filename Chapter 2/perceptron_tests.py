@@ -41,3 +41,11 @@ def seperate_one_dimensional_data_that_generalizes_to_unseen_data_test():
   result = the_perceptron.predict([3])
   print result
   assert result, "3 didn't get classified correctly"
+
+def learn_NAND_test():
+  the_perceptron = perceptron.Perceptron()
+  the_perceptron.train([([1,0], 1), ([1,1], 0), ([0,1], 1), ([0,0], 1)])
+  print the_perceptron._weights
+  result = the_perceptron.predict([0,1])
+  assert result, "should be true"
+
