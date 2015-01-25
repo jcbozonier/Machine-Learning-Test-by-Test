@@ -19,3 +19,13 @@ def predict_what_weve_seen_in_the_past_test():
 
   result = the_perceptron.predict([1])
   assert result == 1
+
+def seperate_one_dimensional_data_that_generalizes_to_unseen_data_test():
+  the_perceptron = perceptron.Perceptron()
+  the_perceptron.train([([0], 0),([-1], 0),([1], 1),([2], 1)])
+  print the_perceptron._weights
+  result = the_perceptron.predict([-2])
+  assert result == 0
+
+  result = the_perceptron.predict([3])
+  assert result == 1

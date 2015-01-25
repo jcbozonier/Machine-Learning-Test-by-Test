@@ -2,8 +2,13 @@ class Perceptron:
   def __init__(self):
     self._result = None
   def train(self, training_data):
-    self._result = { tuple(i[0]):i[1] for i in training_data }
+    weights = [0]
+    for input_data, label in training_data:
+      cross_product = weights[0] * input_data[0]
+      error = label - cross_product
+      weights[0] += error
+    self._weights = weights
   def predict(self, input=None):
     if input is None:
       return None
-    return self._result[tuple(input)]
+    return self._weights[0]*input[0]
