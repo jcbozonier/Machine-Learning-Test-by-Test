@@ -42,10 +42,22 @@ def seperate_one_dimensional_data_that_generalizes_to_unseen_data_test():
   print result
   assert result, "3 didn't get classified correctly"
 
-def learn_NAND_test():
+def learn_AND_with_zero_as_activation_test():
   the_perceptron = perceptron.Perceptron()
-  the_perceptron.train([([1,0], 1), ([1,1], 0), ([0,1], 1), ([0,0], 1)])
+  the_perceptron.train([([1,-1], 0), ([1,1], 1), ([-1,1], 0), ([-1,-1], 0)])
   print the_perceptron._weights
-  result = the_perceptron.predict([0,1])
+  result = the_perceptron.predict([-1,1])
+  assert not result, "should be false"
+  result = the_perceptron.predict([1,1])
   assert result, "should be true"
+
+def learn_NAND_with_zero_as_activation_test():
+  the_perceptron = perceptron.Perceptron()
+  the_perceptron.train([([1,-1], 1), ([1,1], 0), ([-1,1], 1), ([-1,-1], 1)])
+  print the_perceptron._weights
+  result = the_perceptron.predict([-1,1])
+  assert result, "should be true"
+  result = the_perceptron.predict([1,1])
+  print result
+  assert not result, "should be false"
 

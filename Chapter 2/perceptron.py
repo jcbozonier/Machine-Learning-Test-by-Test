@@ -12,4 +12,5 @@ class Perceptron:
   def predict(self, input=None):
     if input is None:
       return None
-    return sum([weight_i * input_i for weight_i, input_i in zip(self._weights, input)]) > 0
+    result = sum([weight_i * input_i for weight_i, input_i in zip(self._weights, input)])
+    return result > 0
