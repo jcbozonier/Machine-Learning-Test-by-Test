@@ -74,3 +74,8 @@ def learn_AND_with_big_training_rate_test():
   assert not result, "should not predict correctly"
 
 
+def enable_configuring_number_of_iterations_test():
+  the_perceptron = perceptron.Perceptron(bias=0.5, max_iterations=1)
+  the_perceptron.train([([1,0], 0), ([1,1], 1), ([0,1], 0), ([0,0], 0)])
+  result = the_perceptron.predict([1,1])
+  assert not result, "should be misclassified"
