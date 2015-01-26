@@ -53,7 +53,7 @@ def learn_NAND_with_zero_as_activation_test():
 def learn_AND_with_one_half_as_bias_test():
   the_perceptron = perceptron.Perceptron(bias=0.5)
   the_perceptron.train([([1,0], 0), ([1,1], 1), ([0,1], 0), ([0,0], 0)])
-  print the_perceptron._weights
+
   result = the_perceptron.predict([0,1])
   assert not result, "should be false"
 
@@ -65,5 +65,12 @@ def learn_AND_with_one_half_as_bias_test():
 
   result = the_perceptron.predict([1,0])
   assert not result, "should be false"
+
+def learn_AND_with_big_training_rate_test():
+  the_perceptron = perceptron.Perceptron(training_rate=10)
+  the_perceptron.train([([1,0], 0), ([1,1], 1), ([0,1], 0), ([0,0], 0)])
+
+  result = the_perceptron.predict([0,1])
+  assert not result, "should not predict correctly"
 
 
