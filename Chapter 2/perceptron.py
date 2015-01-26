@@ -1,6 +1,7 @@
 class Perceptron:
-  def __init__(self):
+  def __init__(self, bias=0):
     self._result = None
+    self._bias = bias
   def train(self, training_data):
     self._weights = len(training_data[0][0])*[0]
     for i in range(10000):
@@ -13,4 +14,4 @@ class Perceptron:
     if input is None:
       return None
     result = sum([weight_i * input_i for weight_i, input_i in zip(self._weights, input)])
-    return result > 0
+    return (result - self._bias) > 0
