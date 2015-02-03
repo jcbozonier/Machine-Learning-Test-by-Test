@@ -89,11 +89,37 @@ def when_used_on_a_linearly_seperable_dataset_test():
     y = .75*x + 5.0*numpy.random.normal(loc=0.0, scale=2.0, size=datapoints_per_sim)
     classification = map(lambda t: 1 if t[1] > .75*t[0] else 0, zip(x,y)) 
     training_dataset = zip(zip(x,y),classification)
-    the_perceptron = perceptron.Perceptron(max_iterations=1000, bias=0.5, training_rate=.001) #, training_rate=.01
+    the_perceptron = perceptron.Perceptron(max_iterations=200, bias=0.5, training_rate=.001) #, training_rate=.01
     the_perceptron.train(training_dataset)
 
     # When predicting
     test_results = [(the_perceptron.predict(i[0]), i[1]) for i in training_dataset]
     number_correct += len(filter(lambda x: x[0]==x[1], test_results))
   print number_correct/(1.0*simulations_to_run*datapoints_per_sim)
-  assert number_correct/(1.0*simulations_to_run*datapoints_per_sim) > 0.90, "Then it should have much better than random performance."
+  assert number_correct/(1.0*simulations_to_run*datapoints_per_sim) >= 0.8, "Then it should have much better than random performance."
+
+
+def when_trained_on_test_dataset_and_then_cross_validated_test():
+  # Given a perceptron trained on a linearly seperable dataset
+  number_correct = 0
+  simulations_to_run = 100
+  datapoints_per_sim = 100
+  for i in range(simulations_to_run):
+    test_x = numpy.random.uniform(0,10,size=datapoints_per_sim)
+    test_y = .75*test_x + 5.0*numpy.random.normal(loc=0.0, scale=2.0, size=datapoints_per_sim)
+    test_classification = map(lambda t: 1 if t[1] > .75*t[0] else 0, zip(test_x,test_y))
+
+    training_dataset = zip(zip(test_x,test_y),test_classification)
+    the_perceptron = perceptron.Perceptron(max_iterations=150, bias=0.5, training_rate=.001) #, training_rate=.01
+    the_perceptron.train(training_dataset)
+
+    # When predicting
+    cv_x = numpy.random.uniform(0,10,size=datapoints_per_sim)
+    cv_y = .75*cv_x + 5.0*numpy.random.normal(loc=0.0, scale=2.0, size=datapoints_per_sim)
+    cv_classification = map(lambda t: 1 if t[1] > .75*t[0] else 0, zip(cv_x,cv_y))
+    cv_dataset = zip(zip(cv_x,cv_y),cv_classification)
+
+    test_results = [(the_perceptron.predict(i[0]), i[1]) for i in cv_dataset]
+    number_correct += len(filter(lambda x: x[0]==x[1], test_results))
+  print number_correct/(1.0*simulations_to_run*datapoints_per_sim)
+  assert number_correct/(1.0*simulations_to_run*datapoints_per_sim) >= 0.75, "Then it should have much better than random performance."
