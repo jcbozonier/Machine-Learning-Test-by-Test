@@ -7,4 +7,3 @@ def vanilla_model_test():
   print model_fit.summary()
   assert model_fit.f_pvalue <= 0.05, "Prob(F-statistic) should be small enough to reject the null hypothesis."
   assert model_fit.rsquared_adj >= 0.95, "Model should explain 95% of the variation in the sampled data or more."
-  assert False
