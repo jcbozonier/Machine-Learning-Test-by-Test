@@ -1,21 +1,10 @@
-import csv
-
-def load_all_data():
-  independent_vars = []
-  dependent_vars = []
-  with open('generated_data.csv', 'r') as f:
-    csv_reader = csv.reader(f, delimiter=',')
-    csv_reader.next()
-    for row in csv_reader:
-      independent_vars.append(map(float, row[:8]))
-      dependent_vars.append(float(row[8]))
-  return independent_vars, dependent_vars
-
-import statsmodels.api as sm
+import pandas
+import statsmodels.formula.api as sm
 
 def vanilla_model_test():
-  independent_vars, dependent_vars = load_all_data()
-  ols_model = sm.OLS(dependent_vars, independent_vars)
-  model_fit = ols_model.fit()
+  df = pandas.read_csv('./generated_data.csv')
+  model_fit = sm.ols('dependent_var ~ ind_var_a + ind_var_b + ind_var_c + ind_var_e + ind_var_b * ind_var_c', data=df).fit()
   print model_fit.summary()
+  assert model_fit.f_pvalue <= 0.05, "Prob(F-statistic) should be small enough to reject the null hypothesis."
+  assert model_fit.rsquared_adj >= 0.95, "Model should explain 95% of the variation in the sampled data or more."
   assert False
