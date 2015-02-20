@@ -15,7 +15,7 @@ dependent_variables = map(lambda x: 3*x[0] - 2*x[1] - .25*x[4] + 5.75*x[1]*x[2] 
 full_dataset = map(lambda x: x[0] + (x[1],), zip(independent_variables, dependent_variables))
 
 import csv
-with open('generated_data_cv.csv', 'wb') as f:
+with open('generated_data.csv', 'wb') as f:
     writer = csv.writer(f)
     writer.writerow(['ind_var_a', 'ind_var_b', 'ind_var_c', 'ind_var_d', 'ind_var_e', 'ind_var_f', 'ind_var_g', 'ind_var_h', 'dependent_var'])
     writer.writerows(full_dataset)
