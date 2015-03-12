@@ -16,11 +16,11 @@ def given_one_observation_for_two_classes_test():
   classifier.train(classification='a class', observation=0)
   classifier.train(classification='b class', observation=100)
   classification = classifier.classify(observation=23.2)
-  assert classification == 'a class', "Should classify as the nearest class."
+  assert classification is None, "Should classify as the nearest class."
   classification = classifier.classify(observation=73.2)
-  assert classification == 'b class', "Should classify as the nearest class."
+  assert classification is None, "Should classify as the nearest class."
 
-def given_multiple_observations_for_two_classes_test():
+def given_multiple_observations_for_two_classes_with_roughly_same_variance_test():
   classifier = NaiveBayes.Classifier()
   classifier.train(classification='a class', observation=0.0)
   classifier.train(classification='a class', observation=1.0)
@@ -32,3 +32,16 @@ def given_multiple_observations_for_two_classes_test():
   assert classification == 'a class', "Should classify as the best fit class."
   classification = classifier.classify(observation=75.0)
   assert classification == 'b class', "Should classify as the best fit class."
+
+def given_multiple_observations_for_two_classes_with_different_variance_test():
+  classifier = NaiveBayes.Classifier()
+  classifier.train(classification='a class', observation=0.0)
+  classifier.train(classification='a class', observation=1.0)
+  classifier.train(classification='a class', observation=2.0)
+  classifier.train(classification='b class', observation=50)
+  classifier.train(classification='b class', observation=75)
+  classifier.train(classification='b class', observation=100)
+  classification = classifier.classify(observation=15)
+  assert classification == 'b class', "Because of class b's variance this should be class b."
+  classification = classifier.classify(observation=2.5)
+  assert classification == 'a class', "Should classify as class a because of tight variance."

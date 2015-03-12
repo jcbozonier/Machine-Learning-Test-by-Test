@@ -1,3 +1,5 @@
+import numpy as np
+
 class Classifier:
   def __init__(self):
     self._classification_a_label = None
@@ -15,14 +17,23 @@ class Classifier:
     elif self._classification_b is None:
       self._classification_b_label = classification
       self._classification_b = [observation]
+  def probability_of_data_given_class(self, observation, class_observations):
+    mean = np.mean(class_observations)
+    variance = np.var(class_observations)
+    p_data_given_class = 1/np.sqrt(2*np.pi*variance)*np.exp(-0.5*((observation - mean)**2)/variance)
+    return p_data_given_class
   def classify(self, observation):
     if self._classification_a_label is None and self._classification_b_label is None:
       return None
     elif self._classification_b_label is None:
       return self._classification_a_label
+    elif len(self._classification_a) == 1 or len(self._classification_b) == 1:
+      return None
     else:
       closest_class = self._classification_a_label
-      closest_observation = abs(observation - self._classification_a[0])
-      if abs(observation - self._classification_b[0]) < closest_observation:
+      sum_of_probabilities = self.probability_of_data_given_class(observation, self._classification_a) +\
+                             self.probability_of_data_given_class(observation, self._classification_b) 
+      closest_observation = self.probability_of_data_given_class(observation, self._classification_a)/sum_of_probabilities
+      if self.probability_of_data_given_class(observation, self._classification_b)/sum_of_probabilities > closest_observation:
         closest_class = self._classification_b_label
     return closest_class
