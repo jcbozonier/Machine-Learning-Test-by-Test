@@ -1,18 +1,29 @@
 class Classifier:
   def __init__(self):
-    self._classifications = {}
+    self._classification_a_label = None
+    self._classification_a = None
+    self._classification_b_label = None
+    self._classification_b = None
   def train(self, classification, observation):
-    if not classification in self._classifications:
-      self._classifications[classification] = []
-    self._classifications[classification].append(observation)
+    if classification == self._classification_a_label:
+      self._classification_a = observation
+    elif classification == self._classification_b_label:
+      self._classification_b = observation
+    elif self._classification_a is None:
+      self._classification_a_label = classification
+      self._classification_a = observation
+    elif self._classification_b is None:
+      self._classification_b_label = classification
+      self._classification_b = observation
   def classify(self, observation):
-    if len(self._classifications.keys()) == 0:
+    if self._classification_a_label is None and self._classification_b_label is None:
       return None
+    elif self._classification_b_label is None:
+      return self._classification_a_label
     else:
-      closest_class = self._classifications.keys()[0]
-      closest_observation = abs(observation - self._classifications[closest_class][0])
-      for the_class, trained_observations in self._classifications.items():
-        if abs(observation - trained_observations[0]) < closest_observation:
-          closest_class = the_class
-          closest_observation = abs(observation - self._classifications[closest_class][0])
+      closest_class = self._classification_a_label
+      closest_observation = abs(observation - self._classification_a)
+      if abs(observation - self._classification_b) < closest_observation:
+        print "in class b"
+        closest_class = self._classification_b_label
     return closest_class
