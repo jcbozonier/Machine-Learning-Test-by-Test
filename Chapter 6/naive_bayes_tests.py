@@ -38,14 +38,20 @@ def given_multiple_observations_for_two_classes_with_different_variance_test():
   classifier.train(classification='a class', observation=0.0)
   classifier.train(classification='a class', observation=1.0)
   classifier.train(classification='a class', observation=2.0)
+
   classifier.train(classification='b class', observation=50)
   classifier.train(classification='b class', observation=75)
   classifier.train(classification='b class', observation=100)
+
+  classifier.train(classification='c class', observation=0.0)
+  classifier.train(classification='c class', observation=-1.0)
+  classifier.train(classification='c class', observation=-2.0)
   classification = classifier.classify(observation=15)
   assert classification == 'b class', "Because of class b's variance this should be class b."
   classification = classifier.classify(observation=2.5)
   assert classification == 'a class', "Should classify as class a because of tight variance."
-
+  classification = classifier.classify(observation=-2.5)
+  assert classification == 'c class', "Should classify as class c because it's the only negative one."
 def given_classes_of_different_likelihood_test():
   classifier = NaiveBayes.Classifier()
   observation = 3
