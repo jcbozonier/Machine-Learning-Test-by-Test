@@ -45,3 +45,12 @@ def given_multiple_observations_for_two_classes_with_different_variance_test():
   assert classification == 'b class', "Because of class b's variance this should be class b."
   classification = classifier.classify(observation=2.5)
   assert classification == 'a class', "Should classify as class a because of tight variance."
+
+def given_classes_of_different_likelihood_test():
+  classifier = NaiveBayes.Classifier()
+  observation = 3
+  class_a_observations = [1,2,3,4,5]
+  class_b_observations = [1,1,2,2,3,3,4,4,5,5]
+  p_class_a, p_class_b = classifier._probability_of_each_class_given_data(observation, class_a_observations, class_b_observations)
+  print p_class_a, p_class_b
+  assert p_class_b > p_class_a, "Should classify as class b when class probability is taken into account."
