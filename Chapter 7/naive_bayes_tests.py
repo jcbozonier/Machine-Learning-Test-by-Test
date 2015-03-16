@@ -171,3 +171,38 @@ def quantify_classifier_accuracy_test():
     print "Correct rate: {0}, Total: {1}".format(correct_rate, number_tested)
     pprint.pprint(classifier._calculate_model_parameters())
     assert correct_rate > 0.6, "Should be significantly better than random."
+
+import RandomForest
+def random_forest_adapter_test():
+    # Load and clean up the data
+    patients = pandas.DataFrame.from_csv('./data/training_SyncPatient.csv').reset_index()
+    transcripts = pandas.DataFrame.from_csv('./data/training_SyncTranscript.csv').reset_index()
+    transcripts = transcripts[transcripts['Height'] > 0]
+    transcripts = transcripts[transcripts['Weight'] > 0]
+    transcripts = transcripts[transcripts['BMI'] > 0]
+    joined_df = patients.merge(transcripts, on='PatientGuid', how='inner')
+    final_df = joined_df.groupby('PatientGuid').first().reset_index()
+    total_set = final_df.ix[np.random.choice(final_df.index, 7000, replace=False)]
+
+    # Partition development and cross-validation datasets
+    training_count = 500
+    training_data = map(lambda x: (x[2], (x[8], x[9], x[10])), total_set.values[:training_count])
+    cross_validate_data = map(lambda x: (x[2], (x[8], x[9], x[10])), total_set.values[training_count:])
+
+    # Train the classifier on the training data.
+    classifier = RandomForest.Classifier()
+    classifier.batch_train(training_data)
+
+    # Test how well the classifier generalizes.
+    number_correct = 0
+    number_tested = 0
+    for class_label, input_data in cross_validate_data:
+      number_tested += 1
+      assigned_class = classifier.classify(observation=input_data)
+      if class_label == assigned_class:
+        number_correct += 1
+
+    correct_rate = number_correct/(1.*number_tested)
+    print "Correct rate: {0}, Total: {1}".format(correct_rate, number_tested)
+    assert correct_rate > 0.6, "Should be significantly better than random."
+    assert False
