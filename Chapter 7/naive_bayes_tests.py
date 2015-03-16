@@ -22,12 +22,13 @@ def given_one_observation_for_two_classes_test():
 
 def given_multiple_observations_for_two_classes_with_roughly_same_variance_test():
   classifier = NaiveBayes.Classifier()
-  classifier.train(classification='a class', observation=(0.0,))
-  classifier.train(classification='a class', observation=(1.0,))
-  classifier.train(classification='a class', observation=(75.0,))
-  classifier.train(classification='b class', observation=(25,))
-  classifier.train(classification='b class', observation=(99,))
-  classifier.train(classification='b class', observation=(100,))
+  classifier.batch_train([('a class',(0.0,)),
+                          ('a class',(1.0,)),
+                          ('a class',(75.0,)),
+                          ('b class',(25,)),
+                          ('b class',(99,)),
+                          ('b class',(100,))])
+
   classification = classifier.classify(observation=(25,))
   assert classification == 'a class', "Should classify as the best fit class."
   classification = classifier.classify(observation=(75.0,))
@@ -205,4 +206,3 @@ def random_forest_adapter_test():
     correct_rate = number_correct/(1.*number_tested)
     print "Correct rate: {0}, Total: {1}".format(correct_rate, number_tested)
     assert correct_rate > 0.6, "Should be significantly better than random."
-    assert False

@@ -4,6 +4,9 @@ import operator
 class Classifier:
   def __init__(self):
     self._classifications = {}
+  def batch_train(self, observations):
+    for label, observation in observations:
+      self.train(label, observation)
   def train(self, classification, observation):
     if not classification in self._classifications:
       self._classifications[classification] = []
