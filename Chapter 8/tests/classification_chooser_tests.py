@@ -1,5 +1,7 @@
-import nose.tools
+import nose.tools, numpy
 from choosey import *
+import libs.NaiveBayes
+import libs.RandomForest
 
 @nose.tools.raises(Exception)
 def given_no_model_options_test():
@@ -83,3 +85,26 @@ def given_a_dictionary_classifier_test():
     ])
     assert classifier.classify((1,2,3)) == 42
     assert classifier.classify((2,3,4)) == 2
+
+def given_real_classifiers_and_random_data_test():
+    class_a_variable_a = numpy.random.normal(loc=51, scale=5, size=1000)
+    class_a_variable_b = numpy.random.normal(loc=5, scale=1, size=1000)
+    class_a_input = zip(class_a_variable_a, class_a_variable_b)
+    class_a_label = ['class a']*len(class_a_input)
+
+    class_b_variable_a = numpy.random.normal(loc=60, scale=7, size=1000)
+    class_b_variable_b = numpy.random.normal(loc=8, scale=2, size=1000)
+    class_b_input = zip(class_b_variable_a, class_b_variable_b)
+    class_b_label = ['class b']*len(class_b_input)
+
+    classifier_chooser = ClassifierChooser(classifier_options_list=[
+            CopyCatClassifier(),
+            libs.NaiveBayes.Classifier(),
+            libs.RandomForest.Classifier()
+        ],
+        test_input=class_a_input[50:500] + class_b_input[50:500],
+        test_label=class_a_label[50:500] + class_b_label[50:500],
+        training_inputs=class_a_input[:50] + class_b_input[:50],
+        training_labels=class_a_label[:50] + class_b_label[:50])
+    print classifier_chooser._classifier_options
+    assert False

@@ -21,6 +21,7 @@ class ClassifierChooser:
                     number_right += 1
             if number_right > highest_score:
                 self._classifier_options = classifier
+            print(classifier, number_right)
 
     @staticmethod
     def create_with_single_classifier_option(classifier_option):
