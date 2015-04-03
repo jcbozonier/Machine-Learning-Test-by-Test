@@ -1,11 +1,20 @@
 import numpy
+import nose.tools
 from sklearn.tree import DecisionTreeRegressor
 
 def decision_tree_can_predict_perfect_linear_relationship_test():
     decision_tree = DecisionTreeRegressor()
     decision_tree.fit([[1],[1.1],[2]], [[0],[0],[1]])
     predicted_value = decision_tree.predict([[-1],[5]])
+    print predicted_value
     assert list(predicted_value) == [0,1]
+
+@nose.tools.raises(Exception)
+def decision_tree_can_not_predict_strings_test():
+    decision_tree = DecisionTreeRegressor()
+    decision_tree.fit([[1],[1.1],[2]], [['class a'],['class a'],['class b']])
+    predicted_value = decision_tree.predict([[-1],[5]])
+
 
 def exploring_decision_trees_test():
     decision_tree = DecisionTreeRegressor()
