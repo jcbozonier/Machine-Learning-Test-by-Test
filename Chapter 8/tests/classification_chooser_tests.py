@@ -46,7 +46,40 @@ def given_multiple_classifier_options_test():
             AlwaysTrueClassifier(),
             AlwaysFalseClassifier()
         ],
-        test_input=78,
-        test_label=1)
+        test_input=[78],
+        test_label=[1])
     predicted_label = classifier_chooser.classify(0)
     assert predicted_label == 1, "Should choose best classifier option to classify with."
+
+def given_multiple_classifier_options_and_several_test_data_test():
+    classifier_chooser = ClassifierChooser(classifier_options_list=[
+            AlwaysFalseClassifier(),
+            AlwaysTrueClassifier()
+        ],
+        test_input=[78,22,12],
+        test_label=[1,1,0])
+    predicted_label = classifier_chooser.classify(0)
+    assert predicted_label == 1, "Should choose best classifier option to classify with."
+
+
+def given_multiple_classifier_options_and_several_test_data_with_training_test():
+    classifier_chooser = ClassifierChooser(classifier_options_list=[
+            DictionaryClassifier(),
+            AlwaysFalseClassifier(),
+            AlwaysTrueClassifier()
+        ],
+        test_input=[(1,2), (3,4)],
+        test_label=[3,7],
+        training_inputs=[(1, 2), (3, 4), (5, 6)],
+        training_labels=[3, 7, 11])
+    predicted_label = classifier_chooser.classify((5,6))
+    assert predicted_label == 11, "Should choose best classifier option to classify with."
+
+def given_a_dictionary_classifier_test():
+    classifier = DictionaryClassifier()
+    classifier.batch_train([
+        (42, (1,2,3)),
+        (2, (2,3,4)),
+    ])
+    assert classifier.classify((1,2,3)) == 42
+    assert classifier.classify((2,3,4)) == 2
