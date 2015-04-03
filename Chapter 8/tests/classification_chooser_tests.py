@@ -1,7 +1,7 @@
 import nose.tools
 from choosey import *
 
-@nose.tools.raises(NoClassifierOptionsException)
+@nose.tools.raises(Exception)
 def given_no_model_options_test():
     classifier_chooser = ClassifierChooser()
 
@@ -14,6 +14,12 @@ def given_a_single_classifier_option_that_does_not_require_training_test():
     input_value = 11
     predicted_label = classifier_chooser.classify(input_value)
     assert predicted_label == input_value, "Should predict input value."
+
+def given_a_different_single_classifier_option_that_does_not_require_training_test():
+    classifier_chooser = ClassifierChooser.create_with_single_classifier_option(AlwaysTrueClassifier())
+    input_value = 42
+    predicted_label = classifier_chooser.classify(input_value)
+    assert predicted_label, "Should always predict True."
 
 def given_a_CopyCatClassifier_test():
     classifier = CopyCatClassifier()

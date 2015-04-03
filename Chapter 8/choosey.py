@@ -3,17 +3,14 @@ class NoClassifierOptionsException(Exception):
 
 class ClassifierChooser:
     def __init__(self,
-                 classifier_options_list=None,
+                 classifier_options_list,
                  test_label=None,
                  test_input=None):
-        if not classifier_options_list is None:
-            self._classifier_options_list = classifier_options_list
-            for classifier in classifier_options_list:
-                predicted_label = classifier.classify(test_input)
-                if predicted_label == test_label:
-                    self._classifier_options = classifier
-        else:
-            raise NoClassifierOptionsException()
+        self._classifier_options = classifier_options_list[0]
+        for classifier in classifier_options_list:
+            predicted_label = classifier.classify(test_input)
+            if predicted_label == test_label:
+                self._classifier_options = classifier
 
     @staticmethod
     def create_with_single_classifier_option(classifier_option):
