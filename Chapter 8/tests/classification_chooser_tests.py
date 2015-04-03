@@ -107,4 +107,4 @@ def given_real_classifiers_and_random_data_test():
         training_inputs=class_a_input[:50] + class_b_input[:50],
         training_labels=class_a_label[:50] + class_b_label[:50])
     print classifier_chooser._classifier_options
-    assert False
+    assert True
