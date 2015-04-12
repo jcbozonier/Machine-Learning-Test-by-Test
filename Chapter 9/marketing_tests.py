@@ -63,3 +63,10 @@ def given_variant_improves_over_control_but_not_enough_to_warrant_advertising_co
     customer = ('60626', 'female')
     ad_name = SimplisticClasses.assign_ad_for(customer, classification_model, regression_model, ad_cost=0.61)
     assert ad_name == 'control', "Should choose to NOT advertise"
+
+def given_variant_improves_over_control_just_enough_to_warrant_advertising_cost_test():
+    classification_model = SimplisticClasses.VariantImprovesAndFemaleMoreSoClassifier()
+    regression_model = SimplisticClasses.AllCasesHaveSameProfitRegressionModel()
+    customer = ('60626', 'female')
+    ad_name = SimplisticClasses.assign_ad_for(customer, classification_model, regression_model, ad_cost=0.60)
+    assert ad_name == 'variant', "Should choose to advertise"
