@@ -1,3 +1,13 @@
+class DumbClassifier():
+    def __init__(self, state):
+        self.state = state
+    def probability(self, input):
+        data = self.state
+        if input in data:
+            return data[input]
+        else:
+            return None
+
 class VariantImprovesAndFemaleMoreSoClassifier():
     def probability(self, input):
         data = {
@@ -10,10 +20,8 @@ class VariantImprovesAndFemaleMoreSoClassifier():
             ('control', '60602', 'male'): 0.50,
             ('variant', '60602', 'male'): 0.45,
         }
-        if input in data:
-            return data[input]
-        else:
-            return None
+        classifier = DumbClassifier(data)
+        return classifier.probability(input)
 
 class AllCasesHaveSameProfitRegressionModel():
     def predict(self, input):

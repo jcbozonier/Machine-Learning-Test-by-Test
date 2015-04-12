@@ -1,7 +1,16 @@
 import SimplisticClasses
 
 def given_a_classifier_where_the_variant_improves_and_females_more_so_test():
-    classifier = SimplisticClasses.VariantImprovesAndFemaleMoreSoClassifier()
+    classifier = SimplisticClasses.DumbClassifier({
+        ('control', '60626', 'female'): 0.60,
+        ('variant', '60626', 'female'): 0.65,
+        ('control', '60626', 'male'): 0.45,
+        ('variant', '60626', 'male'): 0.45,
+        ('control', '60602', 'female'): 0.70,
+        ('variant', '60602', 'female'): 0.70,
+        ('control', '60602', 'male'): 0.50,
+        ('variant', '60602', 'male'): 0.45,
+    })
 
     # Our persuadables
     order_probability = classifier.probability(('control', '60626', 'female'))
@@ -70,3 +79,8 @@ def given_variant_improves_over_control_just_enough_to_warrant_advertising_cost_
     customer = ('60626', 'female')
     ad_name = SimplisticClasses.assign_ad_for(customer, classification_model, regression_model, ad_cost=0.60)
     assert ad_name == 'variant', "Should choose to advertise"
+
+def given_probability_to_order_remains_constant_but_expected_profit_increases():
+    classification_model = SimplisticClasses.VariantImprovesAndFemaleMoreSoClassifier()
+    regression_model = SimplisticClasses.AllCasesHaveSameProfitRegressionModel()
+    customer = ('60626', 'male')
