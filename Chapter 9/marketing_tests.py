@@ -18,13 +18,13 @@ def given_any_input_test():
     assert results == 12.25, "Should be a constant amount regardless of the input."
 
 def given_a_sleeping_dog_test():
+    customer_segment = ('60602', 'male')
     classification_model = SimplisticClasses.DumbClassifier({
-        ('control', '60602', 'male'): 0.50,
-        ('variant', '60602', 'male'): 0.45,
+        ('control',) + customer_segment: 0.50,
+        ('variant',) + customer_segment: 0.45,
     })
     regression_model = SimplisticClasses.AllCasesHaveSameProfitRegressionModel()
-    customer = ('60602', 'male')
-    ad_name = SimplisticClasses.assign_ad_for(customer, classification_model, regression_model)
+    ad_name = SimplisticClasses.assign_ad_for(customer_segment, classification_model, regression_model)
     assert ad_name == 'control', "Should let sleeping dogs lie."
 
 def given_a_variant_that_improves_on_probability_of_ordering_over_control_test():
