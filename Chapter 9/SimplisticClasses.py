@@ -24,7 +24,7 @@ def assign_ad_for(customer, classifier, regression_model):
     variant_input = ('variant',) + customer
     control_probability_of_order = classifier.probability(control_input)
     variant_probability_of_order = classifier.probability(variant_input)
-    if control_probability_of_order > variant_probability_of_order:
+    if control_probability_of_order >= variant_probability_of_order:
         return 'control'
     else:
         return 'variant'

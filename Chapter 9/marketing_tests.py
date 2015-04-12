@@ -49,3 +49,10 @@ def given_a_variant_that_improves_on_probability_of_ordering_over_control_test()
     customer = ('60626', 'female')
     ad_name = SimplisticClasses.assign_ad_for(customer, classification_model, regression_model)
     assert ad_name == 'variant', "Should choose to advertise"
+
+def given_a_variant_that_does_NOT_improve_on_probability_of_ordering_over_control_test():
+    classification_model = SimplisticClasses.VariantImprovesAndFemaleMoreSoClassifier()
+    regression_model = SimplisticClasses.AllCasesHaveSameProfitRegressionModel()
+    customer = ('60626', 'male')
+    ad_name = SimplisticClasses.assign_ad_for(customer, classification_model, regression_model)
+    assert ad_name == 'control', "Should choose to NOT advertise"
