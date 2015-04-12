@@ -26,7 +26,10 @@ def given_a_classifier_where_the_variant_improves_and_females_more_so_test():
     order_probability = classifier.probability(('variant', '60602', 'male'))
     assert order_probability == 0.45, "Males should be more likely to order with the new campaign"
 
-
+def given_a_never_before_seen_observation_test():
+    classifier = SimplisticClasses.VariantImprovesAndFemaleMoreSoClassifier()
+    probability = classifier.probability(('boo', 'bibbit'))
+    assert probability == None, "Should return None"
 
 def given_a_sleeping_dog_test():
     classification_model = SimplisticClasses.VariantImprovesAndFemaleMoreSoClassifier()
