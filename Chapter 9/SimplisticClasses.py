@@ -14,3 +14,10 @@ class VariantImprovesAndFemaleMoreSoClassifier():
             return data[input]
         else:
             return None
+
+class AllCasesHaveSameProfitRegressionModel():
+    def predict(self, input):
+        return 12.25
+
+def assign_ad_for(customer, classification_model, regression_model):
+    pass

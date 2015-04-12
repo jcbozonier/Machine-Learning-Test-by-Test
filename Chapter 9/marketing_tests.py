@@ -31,9 +31,14 @@ def given_a_never_before_seen_observation_test():
     probability = classifier.probability(('boo', 'bibbit'))
     assert probability == None, "Should return None"
 
+def given_any_input_test():
+    regression_model = SimplisticClasses.AllCasesHaveSameProfitRegressionModel()
+    results = regression_model.predict(input=(42,'hai'))
+    assert results == 12.25, "Should be a constant amount regardless of the input."
+
 def given_a_sleeping_dog_test():
     classification_model = SimplisticClasses.VariantImprovesAndFemaleMoreSoClassifier()
     regression_model = SimplisticClasses.AllCasesHaveSameProfitRegressionModel()
     customer = ('60602', 'male')
-    ad_name = assign_ad_for(customer, classification_model, regression_model)
+    ad_name = SimplisticClasses.assign_ad_for(customer, classification_model, regression_model)
     assert ad_name == 'control', "Should let sleeping dogs lie."
