@@ -1,42 +1,14 @@
 import SimplisticClasses
 
-def given_a_classifier_where_the_variant_improves_and_females_more_so_test():
+def given_a_dumb_classifer_that_says_what_I_want_test():
     classifier = SimplisticClasses.DumbClassifier({
         ('control', '60626', 'female'): 0.60,
-        ('variant', '60626', 'female'): 0.65,
-        ('control', '60626', 'male'): 0.45,
-        ('variant', '60626', 'male'): 0.45,
-        ('control', '60602', 'female'): 0.70,
-        ('variant', '60602', 'female'): 0.70,
-        ('control', '60602', 'male'): 0.50,
-        ('variant', '60602', 'male'): 0.45,
     })
-
-    # Our persuadables
     order_probability = classifier.probability(('control', '60626', 'female'))
-    assert order_probability == 0.60, "Females should have a base probability of ordering."
-    order_probability = classifier.probability(('variant', '60626', 'female'))
-    assert order_probability == 0.65, "Females should be more likely to order with the new campaign"
-
-    # Our no effects
-    order_probability = classifier.probability(('control', '60626', 'male'))
-    assert order_probability == 0.45, "Males should have a base probability of ordering."
-    order_probability = classifier.probability(('variant', '60626', 'male'))
-    assert order_probability == 0.45, "Males should be equally likely to order with the new campaign"
-    # More no effects
-    order_probability = classifier.probability(('control', '60602', 'female'))
-    assert order_probability == 0.70, "Females should have a base probability of ordering."
-    order_probability = classifier.probability(('variant', '60602', 'female'))
-    assert order_probability == 0.70, "Females should be equally likely to order with the new campaign"
-
-    # Our sleeping dogs
-    order_probability = classifier.probability(('control', '60602', 'male'))
-    assert order_probability == 0.50, "Males should have a base probability of ordering."
-    order_probability = classifier.probability(('variant', '60602', 'male'))
-    assert order_probability == 0.45, "Males should be more likely to order with the new campaign"
+    assert order_probability == 0.60, "Should return probability I told it to."
 
 def given_a_never_before_seen_observation_test():
-    classifier = SimplisticClasses.VariantImprovesAndFemaleMoreSoClassifier()
+    classifier = SimplisticClasses.DumbClassifier({})
     probability = classifier.probability(('boo', 'bibbit'))
     assert probability == None, "Should return None"
 
@@ -46,14 +18,20 @@ def given_any_input_test():
     assert results == 12.25, "Should be a constant amount regardless of the input."
 
 def given_a_sleeping_dog_test():
-    classification_model = SimplisticClasses.VariantImprovesAndFemaleMoreSoClassifier()
+    classification_model = SimplisticClasses.DumbClassifier({
+        ('control', '60602', 'male'): 0.50,
+        ('variant', '60602', 'male'): 0.45,
+    })
     regression_model = SimplisticClasses.AllCasesHaveSameProfitRegressionModel()
     customer = ('60602', 'male')
     ad_name = SimplisticClasses.assign_ad_for(customer, classification_model, regression_model)
     assert ad_name == 'control', "Should let sleeping dogs lie."
 
 def given_a_variant_that_improves_on_probability_of_ordering_over_control_test():
-    classification_model = SimplisticClasses.VariantImprovesAndFemaleMoreSoClassifier()
+    classification_model = SimplisticClasses.DumbClassifier({
+        ('control', '60626', 'female'): 0.60,
+        ('variant', '60626', 'female'): 0.65,
+    })
     regression_model = SimplisticClasses.AllCasesHaveSameProfitRegressionModel()
     customer = ('60626', 'female')
     ad_name = SimplisticClasses.assign_ad_for(customer, classification_model, regression_model)
