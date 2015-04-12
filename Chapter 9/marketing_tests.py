@@ -33,7 +33,7 @@ def given_a_never_before_seen_observation_test():
 
 def given_a_sleeping_dog_test():
     classification_model = SimplisticClasses.VariantImprovesAndFemaleMoreSoClassifier()
-    regression_model = AllCasesHaveSameProfitRegressionModel()
+    regression_model = SimplisticClasses.AllCasesHaveSameProfitRegressionModel()
     customer = ('60602', 'male')
     ad_name = assign_ad_for(customer, classification_model, regression_model)
     assert ad_name == 'control', "Should let sleeping dogs lie."
