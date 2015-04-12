@@ -19,12 +19,15 @@ class AllCasesHaveSameProfitRegressionModel():
     def predict(self, input):
         return 12.25
 
-def assign_ad_for(customer, classifier, regression_model):
+def assign_ad_for(customer, classifier, regression_model, ad_cost=0):
     control_input = ('control',) + customer
     variant_input = ('variant',) + customer
     control_probability_of_order = classifier.probability(control_input)
     variant_probability_of_order = classifier.probability(variant_input)
-    if control_probability_of_order >= variant_probability_of_order:
+    lift = variant_probability_of_order - control_probability_of_order
+    expected_lift = lift * regression_model.predict(None) - ad_cost
+    expected_lift = int(100*expected_lift)/100.0
+    if expected_lift <= 0:
         return 'control'
     else:
         return 'variant'
