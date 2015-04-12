@@ -19,5 +19,12 @@ class AllCasesHaveSameProfitRegressionModel():
     def predict(self, input):
         return 12.25
 
-def assign_ad_for(customer, classification_model, regression_model):
-    pass
+def assign_ad_for(customer, classifier, regression_model):
+    control_input = ('control',) + customer
+    variant_input = ('variant',) + customer
+    control_probability_of_order = classifier.probability(control_input)
+    variant_probability_of_order = classifier.probability(variant_input)
+    if control_probability_of_order > variant_probability_of_order:
+        return 'control'
+    else:
+        return 'variant'
