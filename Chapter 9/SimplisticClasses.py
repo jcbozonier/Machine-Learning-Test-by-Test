@@ -7,6 +7,8 @@ class DumbClassifier():
             return data[input]
         else:
             return None
+    def predict(self, input):
+        return self.probability(input)
 
 class VariantImprovesAndFemaleMoreSoClassifier():
     def probability(self, input):
@@ -32,10 +34,11 @@ def assign_ad_for(customer, classifier, regression_model, ad_cost=0):
     variant_input = ('variant',) + customer
     control_probability_of_order = classifier.probability(control_input)
     variant_probability_of_order = classifier.probability(variant_input)
-    lift = variant_probability_of_order - control_probability_of_order
-    expected_lift = lift * regression_model.predict(None) - ad_cost
-    expected_lift = int(100*expected_lift)/100.0
-    if expected_lift <= 0:
+    control_profit = regression_model.predict(control_input)
+    variant_profit = regression_model.predict(variant_input)
+    variant_expected_value = variant_probability_of_order * variant_profit - ad_cost
+    control_expected_value = control_probability_of_order * control_profit
+    if control_expected_value >= variant_expected_value:
         return 'control'
     else:
         return 'variant'
