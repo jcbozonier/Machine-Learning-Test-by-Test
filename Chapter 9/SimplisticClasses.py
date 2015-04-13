@@ -31,5 +31,12 @@ def assign_ad_for(customer, classifier, regression_model, ad_cost=0):
 class LogisticModel():
     def __init__(self, model):
         self.model = model
+    def probability(self, input):
+        return self.model.predict_proba(input)[0][1]
+
+
+class RegressionModel():
+    def __init__(self, model):
+        self.model = model
     def predict(self, input):
-        self.model.predict_proba(input)
+        return self.model.predict(input)[0]

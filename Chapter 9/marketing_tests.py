@@ -81,13 +81,28 @@ def given_probability_to_order_remains_constant_but_expected_profit_increases_te
     assert ad_name == 'variant', "Should recommend using ad"
 
 class DummySklearnModel():
-    def __init__(self):
+    def __init__(self, probability_of_ordering):
         self.predict_proba_call_arguments = None
+        self.probability_of_ordering = 0.42
     def predict_proba(self, input):
         self.predict_proba_call_arguments = input
+        return [[1-self.probability_of_ordering, self.probability_of_ordering]]
 
 def logistic_regression_test():
-    dummy_sklearn_model = DummySklearnModel()
+    dummy_sklearn_model = DummySklearnModel(probability_of_ordering = 0.42)
     model = SimplisticClasses.LogisticModel(dummy_sklearn_model)
-    model.predict([1,2,3])
+    probability_of_ordering = model.probability([1,2,3])
     assert dummy_sklearn_model.predict_proba_call_arguments == [1,2,3]
+    assert probability_of_ordering == 0.42
+
+class DummyRegressionModel():
+    def __init__(self, value_predicted):
+        self.value_predicted = value_predicted
+    def predict(self, input):
+        return [self.value_predicted]
+
+def linear_regression_test():
+    dummy_regression_model = DummyRegressionModel(value_predicted=33.12)
+    model = SimplisticClasses.RegressionModel(dummy_regression_model)
+    expected_profit_if_orders = model.predict([1,5,2])
+    assert expected_profit_if_orders == 33.12
