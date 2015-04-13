@@ -79,3 +79,15 @@ def given_probability_to_order_remains_constant_but_expected_profit_increases_te
     })
     ad_name = SimplisticClasses.assign_ad_for(customer_segment, classification_model, regression_model)
     assert ad_name == 'variant', "Should recommend using ad"
+
+class DummySklearnModel():
+    def __init__(self):
+        self.predict_proba_call_arguments = None
+    def predict_proba(self, input):
+        self.predict_proba_call_arguments = input
+
+def logistic_regression_test():
+    dummy_sklearn_model = DummySklearnModel()
+    model = SimplisticClasses.LogisticModel(dummy_sklearn_model)
+    model.predict([1,2,3])
+    assert dummy_sklearn_model.predict_proba_call_arguments == [1,2,3]

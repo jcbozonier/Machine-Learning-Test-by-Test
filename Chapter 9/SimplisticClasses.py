@@ -27,3 +27,9 @@ def assign_ad_for(customer, classifier, regression_model, ad_cost=0):
         return 'control'
     else:
         return 'variant'
+
+class LogisticModel():
+    def __init__(self, model):
+        self.model = model
+    def predict(self, input):
+        self.model.predict_proba(input)

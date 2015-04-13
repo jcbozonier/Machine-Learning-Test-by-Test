@@ -10,7 +10,7 @@ option_combinations = set(reduce(lambda x,y: x+y,
 enhancers_by_segment = {
     ('60602', 'U'): {
                         'control':{'ordering': 1.00, 'profit': 1.00},
-                        'variant':{'ordering': 1.15, 'profit': 1.14},
+                        'variant':{'ordering': 1.35, 'profit': 1.20},
                     },
     ('98006', 'M'): {
                         'control':{'ordering': 1.00, 'profit': 1.00},
@@ -18,11 +18,11 @@ enhancers_by_segment = {
                     },
     ('60602', 'M'): {
                         'control':{'ordering': 1.00, 'profit': 1.00},
-                        'variant':{'ordering': 1.04, 'profit': 1.04},
+                        'variant':{'ordering': 1.45, 'profit': 1.24},
                     },
     ('60626', 'M'): {
                         'control':{'ordering': 1.00, 'profit': 1.00},
-                        'variant':{'ordering': 0.92, 'profit': 0.95},
+                        'variant':{'ordering': 0.6, 'profit': 0.8},
                     },
     ('60626', 'F'): {
                         'control':{'ordering': 1.00, 'profit': 1.00},
@@ -53,7 +53,7 @@ for i in range(10000):
     customer_data = {
         'zipcode': random.choice(zipcode_options),
         'gender': random.choice(gender_options),
-        'orders_in_last_6_months': numpy.random.poisson(3.0),
+        'orders_in_last_6_months': numpy.random.poisson(1.0),
         'customer_service_contacts': numpy.random.poisson(0.5),
         'profit_from_order': profit_from_order,
         'ordered': False,
@@ -68,7 +68,7 @@ for i in range(10000):
         buff = enhancer['variant']
         customer_data['treatment'] = 'variant'
     likelihood_to_order = likelihood_to_order * buff['ordering'] \
-                          * (1.0 + customer_data['orders_in_last_6_months']/6.0) \
+                          * (1.0 + customer_data['orders_in_last_6_months']/10.0) \
                           / (1.0 + customer_data['customer_service_contacts'])
     ordered = numpy.random.binomial(1, likelihood_to_order)
     profit_from_order = profit_from_order * buff['profit'] \

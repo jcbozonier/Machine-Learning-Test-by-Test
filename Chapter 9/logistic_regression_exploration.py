@@ -3,32 +3,19 @@ from sklearn.linear_model import LogisticRegression
 import statsmodels.api
 
 treatment_codes = {
-    'control': 0,
-    'variant': 1
+    'control': 1,
+    'variant': 2
 }
 zipcode_codes = {
-    '60626': 0,
-    '60602': 1,
-    '98006': 2
+    '60626': 1,
+    '60602': 2,
+    '98006': 3
 }
 gender_codes = {
-    'M': 0,
-    'F': 1,
-    'U': 2
+    'M': 1,
+    'F': 2,
+    'U': 3
 }
-
-def create_order_inputs_and_outputs(fake_data):
-    test_inputs = []
-    for x in fake_data:
-        input = (treatment_codes[x['treatment']],
-           zipcode_codes[x['zipcode']],
-           gender_codes[x['gender']],
-           x['orders_in_last_6_months'],
-           x['customer_service_contacts'])
-        test_inputs.append(input)
-
-    test_labels = [x['ordered'] for x in fake_data]
-    return test_labels, test_inputs
 
 def create_profit_inputs_and_outputs(fake_data):
     test_inputs = []
@@ -43,6 +30,19 @@ def create_profit_inputs_and_outputs(fake_data):
         test_inputs.append(input)
 
     test_labels = [x['profit_from_order'] for x in fake_data if x['ordered']]
+    return test_labels, test_inputs
+
+def create_order_inputs_and_outputs(fake_data):
+    test_inputs = []
+    for x in fake_data:
+        input = (treatment_codes[x['treatment']],
+           zipcode_codes[x['zipcode']],
+           gender_codes[x['gender']],
+           x['orders_in_last_6_months'],
+           x['customer_service_contacts'])
+        test_inputs.append(input)
+
+    test_labels = [x['ordered'] for x in fake_data]
     return test_labels, test_inputs
 
 def logistic_regression_hello_world_test():
